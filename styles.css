@@ -1,0 +1,82 @@
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:#f0f2f5;color:#333;min-height:100vh;display:flex;justify-content:center;align-items:center}
+#app{width:98vw;max-width:1280px;height:96vh;display:flex;flex-direction:column;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 20px rgba(0,0,0,.08)}
+#topbar{background:#f8f9fa;padding:10px 20px;display:flex;justify-content:space-between;align-items:center;font-size:14px;border-bottom:1px solid #e0e0e0;flex-shrink:0}
+#topbar .act-info{color:#c0392b;font-weight:bold}
+#main{flex:1;display:flex;overflow:hidden;min-height:0}
+#left-panel{width:300px;background:#fafbfc;padding:12px;display:flex;flex-direction:column;gap:6px;overflow-y:auto;border-right:1px solid #e8eaed;flex-shrink:0}
+#right-panel{flex:1;display:flex;flex-direction:column;padding:24px 28px;overflow-y:auto;background:#fff}
+.stat-row{display:flex;justify-content:space-between;font-size:13px;padding:1px 0;color:#555}
+.stat-row .val{color:#b8860b;font-weight:bold}
+.hp-bar{height:14px;background:#e8e8e8;border-radius:7px;overflow:hidden;margin:2px 0}
+.hp-bar .fill{height:100%;background:linear-gradient(90deg,#e74c3c,#e74c3c);transition:width .3s}
+.section-title{color:#c0392b;font-size:12px;font-weight:bold;border-bottom:1px solid #e8eaed;padding-bottom:3px;margin-top:4px}
+.equip-slot{font-size:11px;padding:2px 6px;background:#f0f2f5;border-radius:4px;margin:1px 0;border:1px solid #e8eaed;position:relative}
+.equip-slot.has-tooltip:hover{background:#fff;border-color:#c0392b;z-index:5}
+.equip-slot .label{color:#888}
+.equip-slot .item-name{color:#b8860b;font-weight:bold}
+.equip-slot.rarity-F .item-name{color:#aaa}
+.equip-slot.rarity-E .item-name{color:#666}
+.equip-slot.rarity-D .item-name{color:#2e7d32}
+.equip-slot.rarity-C .item-name{color:#1565c0}
+.equip-slot.rarity-B .item-name{color:#7b1fa2}
+.equip-slot.rarity-A .item-name{color:#e65100}
+.equip-slot.rarity-S .item-name{color:#b8860b}
+.equip-slot .inv-tooltip{bottom:auto;top:50%;left:auto;right:105%;transform:translateY(-50%)}
+.equip-slot .inv-tooltip::after{top:50%;left:auto;right:100%;transform:translateY(-50%);border-top-color:transparent;border-right-color:#333;border:5px solid transparent;border-right:5px solid #333}
+.inv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px}
+.inv-slot{aspect-ratio:1;background:#f5f6f8;border-radius:4px;font-size:10px;padding:2px;text-align:center;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;border:1px solid #e0e0e0;position:relative;overflow:hidden;color:#555}
+.inv-slot:hover{border-color:#c0392b;background:#fff;z-index:5;overflow:visible}
+.inv-tooltip{display:none;position:absolute;bottom:110%;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:8px 12px;border-radius:6px;font-size:11px;white-space:nowrap;z-index:50;pointer-events:none;line-height:1.5;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.inv-tooltip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#333}
+.inv-slot:hover .inv-tooltip,
+.equip-slot.has-tooltip:hover .inv-tooltip{display:block}
+.inv-slot .qty{font-size:9px;color:#999}
+.inv-slot.equipped{border-color:#b8860b;box-shadow:0 0 4px rgba(184,134,11,.3);background:#fffef5}
+.inv-slot .eq-tag{font-size:8px;color:#b8860b;position:absolute;top:1px;right:2px}
+.inv-slot.rarity-F{color:#aaa}
+.inv-slot.rarity-E{color:#555}
+.inv-slot.rarity-D{color:#2e7d32}
+.inv-slot.rarity-C{color:#1565c0}
+.inv-slot.rarity-B{color:#7b1fa2}
+.inv-slot.rarity-A{color:#e65100}
+.inv-slot.rarity-S{color:#d4a017}
+.event-title{font-size:24px;color:#c0392b;margin-bottom:8px}
+.event-desc{font-size:15px;line-height:2;color:#555;margin-bottom:20px;font-style:italic}
+.options-area{display:flex;flex-direction:column;gap:10px}
+.opt-btn{display:block;width:100%;text-align:left;padding:14px 18px;background:#fff;color:#333;border:1px solid #d0d5dd;border-radius:8px;cursor:pointer;font-size:14px;transition:all .2s}
+.opt-btn:hover{background:#fef5f5;border-color:#c0392b;color:#c0392b}
+.opt-btn .cost{font-size:12px;margin-left:8px}
+.screen-center{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:20px}
+.screen-title{font-size:36px;color:#c0392b}
+.screen-subtitle{font-size:16px;color:#888}
+.big-btn{padding:14px 48px;font-size:18px;background:#c0392b;color:#fff;border:none;border-radius:8px;cursor:pointer;transition:all .2s;margin:6px}
+.big-btn:hover{background:#e74c3c;transform:translateY(-2px)}
+.big-btn.secondary{background:#fff;color:#c0392b;border:1px solid #c0392b}
+.big-btn.secondary:hover{background:#fef5f5}
+.result-box{background:#fafbfc;border:1px solid #e0e0e0;border-radius:8px;padding:16px 20px;margin:12px 0;line-height:1.8;color:#444;font-size:14px}
+.result-box .highlight{color:#b8860b;font-weight:bold}
+.result-box .hp-change{color:#27ae60}
+.result-box .hp-loss{color:#c0392b}
+.combat-log{font-family:Consolas,monospace;font-size:12px;line-height:1.6;color:#666}
+.combat-log .round-hdr{color:#c0392b;font-weight:bold;margin-top:6px}
+.combat-log .player-action{color:#27ae60}
+.combat-log .enemy-action{color:#c0392b}
+.combat-log .result-win{color:#b8860b;font-weight:bold;font-size:14px}
+.combat-log .result-lose{color:#c0392b;font-weight:bold;font-size:14px}
+.reward-box{background:#fffef5;border:1px solid #e8d88e;border-radius:8px;padding:12px 16px;margin:8px 0}
+.reward-box .reward-title{color:#b8860b;font-weight:bold;margin-bottom:6px}
+.reward-box .reward-item{font-size:13px;padding:2px 0;color:#555}
+.popup-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);display:flex;justify-content:center;align-items:center;z-index:100}
+.popup-box{background:#fff;border:2px solid #e0e0e0;border-radius:12px;padding:24px;max-width:420px;width:90%;box-shadow:0 4px 24px rgba(0,0,0,.12)}
+.popup-title{font-size:20px;color:#c0392b;margin-bottom:12px}
+.shop-item{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#fafbfc;border:1px solid #e8eaed;border-radius:6px;margin:4px 0}
+.shop-item .buy-btn{padding:4px 16px;background:#c0392b;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:12px}
+.shop-item .buy-btn:hover{background:#e74c3c}
+.shop-item .buy-btn:disabled{background:#ddd;color:#999;cursor:not-allowed}
+.flavor-text{color:#999;font-size:12px;margin-top:8px;font-style:italic}
+.buff-tag{display:inline-block;padding:1px 6px;background:#e8f5e9;color:#2e7d32;border-radius:3px;font-size:11px;margin:1px;border:1px solid #c8e6c9;position:relative;cursor:default}
+.buff-tag.has-tooltip:hover{z-index:5}
+.buff-tag .inv-tooltip{bottom:auto;top:110%;left:50%;transform:translateX(-50%)}
+.buff-tag .inv-tooltip::after{top:auto;bottom:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-bottom-color:#333}
+.buff-tag.has-tooltip:hover .inv-tooltip{display:block}
