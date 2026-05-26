@@ -72,15 +72,15 @@ const EVENT_POOL_ACT4 = [
     desc:'一排拱门悬浮在虚空中，每扇门上刻着不同符文：剑、盾、眼。门后的黑暗中传来不同的声音。',
     options:[
       { text:'进入剑之门', conds:[{type:'atk',op:'>=',val:30}], costs:[], results:[
-        {type:'combat',enemy:'voidSwordsman',rewards:[{type:'addItem',itemId:'holySword',qty:1},{type:'gold',val:60}]},
+        {type:'combat',enemy:'voidSwordsman',rewards:[{type:'addItem',itemId:'holySword',qty:1},{type:'gold',val:40}]},
         {type:'msg',text:'虚空剑士手持利刃向你走来！'}
       ]},
       { text:'进入盾之门', conds:[{type:'def',op:'>=',val:14}], costs:[], results:[
-        {type:'combat',enemy:'voidGuard',rewards:[{type:'addItem',itemId:'holyShield',qty:1},{type:'gold',val:60}]},
+        {type:'combat',enemy:'voidGuard',rewards:[{type:'addItem',itemId:'holyShield',qty:1},{type:'gold',val:40}]},
         {type:'msg',text:'虚空守卫举起巨盾挡住去路！'}
       ]},
       { text:'进入眼之门', conds:[{type:'luk',op:'>=',val:14}], costs:[], results:[
-        {type:'combat',enemy:'voidSeer',rewards:[{type:'addItem',itemId:'destinyStar',qty:1},{type:'gold',val:60}]},
+        {type:'combat',enemy:'voidSeer',rewards:[{type:'addItem',itemId:'destinyStar',qty:1},{type:'gold',val:40}]},
         {type:'msg',text:'虚空先知睁开第三只眼凝视着你！'}
       ]},
       { text:'不进入任何门', conds:[], costs:[], results:[
@@ -121,21 +121,21 @@ const EVENT_POOL_ACT4 = [
   { id:'abyssFisher', title:'深渊钓客',
     desc:'一个白发老者坐在裂隙边缘，手中握着一根发光的鱼竿。"年轻人，要不要试试手气？这深渊底下可不止有怪物——还有被遗忘的宝物。"',
     options:[
-      { text:'试一次手气', conds:[{type:'gold',op:'>=',val:50}], costs:[{type:'gold',val:50}], results:[
+      { text:'试一次手气', conds:[{type:'gold',op:'>=',val:50}], costs:[{type:'gold',val:35}], results:[
         {type:'lukCheck',threshold:40,success:[
           {type:'randomEquip',rarity:'A-S'},
           {type:'msg',text:'钓竿猛地一沉！你拉上来一件闪闪发光的装备！'}
         ],fail:[
-          {type:'combat',enemy:'riftWrath',rewards:[{type:'gold',val:40}]},
+          {type:'combat',enemy:'riftWrath',rewards:[{type:'gold',val:28}]},
           {type:'msg',text:'钓竿剧烈弯曲——一只裂隙之怒被钓了上来！'}
         ]},
       ]},
-      { text:'花大价钱钓三次', conds:[{type:'gold',op:'>=',val:150}], costs:[{type:'gold',val:150}], results:[
+      { text:'花大价钱钓三次', conds:[{type:'gold',op:'>=',val:150}], costs:[{type:'gold',val:100}], results:[
         {type:'lukCheck',threshold:40,success:[{type:'randomEquip',rarity:'A'},{type:'msg',text:'第一钓：一件A级装备！'}],fail:[{type:'addItem',itemId:'purpleShard',qty:1},{type:'msg',text:'第一钓：紫水晶碎片。'}]},
         {type:'lukCheck',threshold:40,success:[{type:'randomEquip',rarity:'A'},{type:'msg',text:'第二钓：又一件A级装备！'}],fail:[{type:'addItem',itemId:'purpleShard',qty:1},{type:'msg',text:'第二钓：紫水晶碎片。'}]},
         {type:'lukCheck',threshold:40,success:[{type:'randomEquip',rarity:'A'},{type:'msg',text:'第三钓：再来一件A级装备！'}],fail:[{type:'addItem',itemId:'purpleShard',qty:1},{type:'msg',text:'第三钓：紫水晶碎片。'}]},
       ]},
-      { text:'向老者请教技巧', conds:[{type:'luk',op:'>=',val:15}], costs:[{type:'gold',val:30}], results:[
+      { text:'向老者请教技巧', conds:[{type:'luk',op:'>=',val:15}], costs:[{type:'gold',val:20}], results:[
         {type:'stat',key:'luk',val:2},
         {type:'buff',name:'垂钓者的智慧',battles:5,effects:{lukBonus15:true}},
         {type:'msg',text:'老者教了你几手绝活。<hl>永久 LUK+2</hl> + 获得 <hl>垂钓者的智慧</hl>（下5次LUK判定+20%）。'}
@@ -148,7 +148,7 @@ const EVENT_POOL_ACT4 = [
     desc:'一条狭窄的通道，两侧紫水晶被黑暗力量污染。你的影子从地面上站立起来，变成了一个与你一模一样的暗影镜像。',
     options:[
       { text:'与镜像战斗', conds:[], costs:[], results:[
-        {type:'combat',enemy:'voidSwordsman',rewards:[{type:'addItem',itemId:'shadowBlade',qty:1},{type:'gold',val:70}]},
+        {type:'combat',enemy:'voidSwordsman',rewards:[{type:'addItem',itemId:'shadowBlade',qty:1},{type:'gold',val:48}]},
         {type:'msg',text:'镜像拔剑——与你同样的招式！'}
       ]},
       { text:'打碎被污染的水晶', conds:[{type:'atk',op:'>=',val:32}], costs:[{type:'hpCost',val:15}], results:[
@@ -174,7 +174,7 @@ const EVENT_POOL_ACT4 = [
       ]},
       { text:'搜寻物资', conds:[{type:'luk',op:'>=',val:13}], costs:[], results:[
         {type:'addItem',itemId:'bigHealPotion',qty:3},
-        {type:'gold',val:80},
+        {type:'gold',val:55},
         {type:'addItem',itemId:'purpleShard',qty:2},
         {type:'msg',text:'你找到了前人的物资储备！获得 <hl>大治疗药水 ×3</hl>、<hl>Gold +80</hl>、<hl>紫水晶碎片 ×2</hl>。'}
       ]},
@@ -193,7 +193,7 @@ const EVENT_POOL_ACT4 = [
     desc:'无数紫水晶形成天然镜面矩阵，中央悬浮着一颗紫晶核心——那是一只结晶巨蝎的心脏。巨蝎感应到你的到来，六只水晶眼睛同时睁开。',
     options:[
       { text:'挑战巨蝎', conds:[], costs:[], results:[
-        {type:'combat',enemy:'crystalScorpion',rewards:[{type:'gold',val:100},{type:'randomEquip',rarity:'A'}]},
+        {type:'combat',enemy:'crystalScorpion',rewards:[{type:'gold',val:70},{type:'randomEquip',rarity:'A'}]},
         {type:'msg',text:'结晶巨蝎挥动着晶刺朝你冲来！'}
       ]},
       { text:'潜行偷取晶核', conds:[{type:'spd',op:'>=',val:18}], costs:[], results:[

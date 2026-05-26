@@ -30,7 +30,7 @@ async function simulateCombatRound() {
   const enemy = cs.enemy;
   const stats = totalStats();
   let pAtk = stats.atk;
-  const pDef = stats.def;
+  let pDef = stats.def;
   const pSpd = stats.spd;
 
   const weaponUid = G.equipment.weapon;
@@ -152,8 +152,15 @@ async function simulateCombatRound() {
     if (cs.round % 3 === 0 && !G.buffs.some(b => b.effects && b.effects.immuneDebuff)) { G.player.atk = Math.max(0, G.player.atk - 2); G.player.def = Math.max(0, G.player.def - 2); G.player.spd = Math.max(0, G.player.spd - 2); logLines.push(`[维度撕裂] 全属性 −2！`); }
   }
   if (enemy.trait === 'fateLord') {
-    if (cs.round % 5 === 0) { const r = Math.random(); if (r < 0.33) { enemy.atk += 5; logLines.push(`[命运轮转] 命运化身的 ATK +5`); } else if (r < 0.66) { enemy.def += 5; logLines.push(`[命运轮转] 命运化身的 DEF +5`); } else { enemy.spd += 5; logLines.push(`[命运轮转] 命运化身的 SPD +5`); } }
-    if (cs.round % 3 === 0) { const reflect = Math.floor((enemy.maxHp - enemy.hp) * 0.3); if (reflect > 0) { G.player.hp -= reflect; logLines.push(`[因果反噬] 反弹 ${reflect} 点伤害！`); if (G.player.hp <= 0) { endCombat(false, logLines); return; } } }
+    if (cs.round % 5 === 0) { if (Math.random() < 0.5) { enemy.atk += 5; logLines.push(`[命运轮转] 命运化身的 ATK +5`); } else { enemy.def += 5; logLines.push(`[命运轮转] 命运化身的 DEF +5`); } }
+    // Track HP at start of round for 因果反噬
+    if (!enemy._hpBeforeRound) enemy._hpBeforeRound = enemy.hp;
+    if (cs.round % 3 === 0 && cs.round > 0) {
+      const dmgThisRound = enemy._hpBeforeRound - enemy.hp;
+      const reflect = Math.floor(Math.max(0, dmgThisRound) * 0.3);
+      if (reflect > 0) { G.player.hp -= reflect; logLines.push(`[因果反噬] 反弹 ${reflect} 点伤害！`); if (G.player.hp <= 0) { endCombat(false, logLines); return; } }
+    }
+    enemy._hpBeforeRound = enemy.hp;
     if (enemy.hp < enemy.maxHp * 0.2 && !enemy._final) { enemy._final = true; for (let fi = 0; fi < 3; fi++) { const fdmg = Math.max(1, enemy.atk - pDef); G.player.hp -= fdmg; logLines.push(`[终末审判] 第 ${fi+1} 击造成 ${fdmg} 点伤害！`); if (G.player.hp <= 0) { endCombat(false, logLines); return; } } }
   }
   if (enemy.trait === 'poison' && cs.round % 3 === 0) {
@@ -439,36 +446,32 @@ function applyReward(reward, goldMult) {
         const lukBonus = G.buffs.some(b => b.effects && b.effects.lukBonus15) ? 15 : 0;
         const roll = Math.random() * 100;
         if (roll < (reward.chance + stats.luk * 2 + lukBonus)) {
-          let actualItemId = reward.itemId;
+          const r = addItem(reward.itemId, reward.qty || 1);
+          if (r.full) { if (!G.pendingFullItems) G.pendingFullItems = []; G.pendingFullItems.push({itemId:reward.itemId,qty:reward.qty||1}); }
+          G.combatLog.push(r.full ? '⚠ 物品栏已满！' : `掉落：${ITEMS[reward.itemId].name} ×${reward.qty||1}`);
           const accUids = [G.equipment.acc1, G.equipment.acc2].filter(Boolean);
           for (const auid of accUids) {
             const acc = G.inventory.find(i => i.uid === auid);
-            if (acc && acc.id === 'treasureAmulet') {
-              actualItemId = upgradeRarity(reward.itemId);
-              break;
-            }
-          }
-          addItem(actualItemId, reward.qty || 1);
-          G.combatLog.push(`掉落：${ITEMS[actualItemId].name} ×${reward.qty||1}`);
-          for (const auid of accUids) {
-            const acc = G.inventory.find(i => i.uid === auid);
             if (acc && acc.id === 'destinyStar') {
-              addItem(actualItemId, reward.qty || 1);
-              G.combatLog.push(`[命运之星] 额外掉落：${ITEMS[actualItemId].name} ×${reward.qty||1}`);
+              const r2 = addItem(reward.itemId, reward.qty || 1);
+              if (r2.full) { if (!G.pendingFullItems) G.pendingFullItems = []; G.pendingFullItems.push({itemId:reward.itemId,qty:reward.qty||1}); }
+              G.combatLog.push(r2.full ? '' : `[命运之星] 额外掉落：${ITEMS[reward.itemId].name} ×${reward.qty||1}`);
               break;
             }
           }
         }
       } else {
-        addItem(reward.itemId, reward.qty || 1);
-        G.combatLog.push(`获得 ${ITEMS[reward.itemId].name} ×${reward.qty||1}`);
+        const r = addItem(reward.itemId, reward.qty || 1);
+        if (r.full) { if (!G.pendingFullItems) G.pendingFullItems = []; G.pendingFullItems.push({itemId:reward.itemId,qty:reward.qty||1}); }
+        G.combatLog.push(r.full ? '⚠ 物品栏已满！' : `获得 ${ITEMS[reward.itemId].name} ×${reward.qty||1}`);
       }
       break;
     case 'randomEquip':
       const equip = rollRandomEquip(reward.rarity);
       if (equip) {
-        addItem(equip, 1);
-        G.combatLog.push(`获得 ${ITEMS[equip].name}`);
+        const r = addItem(equip, 1);
+        if (r.full) { if (!G.pendingFullItems) G.pendingFullItems = []; G.pendingFullItems.push({itemId:equip,qty:1}); }
+        G.combatLog.push(r.full ? '⚠ 物品栏已满！' : `获得 ${ITEMS[equip].name}`);
       }
       break;
   }

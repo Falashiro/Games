@@ -309,9 +309,8 @@ async function selectOption(idx) {
 
   const hpBefore = G.player.hp;
   applyCosts(opt.costs);
+  const hpAfterCosts = G.player.hp;
   const messages = await applyResults(opt.results);
-  const hpAfter = G.player.hp;
-  const hpDiff = hpAfter - hpBefore;
 
   if (G.shopMode) { render(); return; }
   if (G.phase === 'combat') {
@@ -319,10 +318,10 @@ async function selectOption(idx) {
   }
   // Handle full inventory items
   if (G.pendingFullItems && G.pendingFullItems.length > 0) {
-    showFullInventoryPopup(messages, hpDiff);
+    showFullInventoryPopup(messages, hpBefore - hpAfterCosts);
     return;
   }
-  showResultMessages(messages, hpDiff);
+  showResultMessages(messages, hpBefore - hpAfterCosts);
 }
 
 // ---- 关底事件 ----
@@ -330,10 +329,10 @@ async function selectOption(idx) {
 function bossFight() {
   let enemyId, goldReward, equipRarity;
   if (G.currentAct === 1) { enemyId = 'spiderBoss'; goldReward = 50; equipRarity = 'C-B'; }
-  else if (G.currentAct === 2) { enemyId = 'rockWorm'; goldReward = 80; equipRarity = 'B-C'; }
-  else if (G.currentAct === 3) { enemyId = 'ancientConstruct'; goldReward = 100; equipRarity = 'B-A'; }
-  else if (G.currentAct === 4) { enemyId = 'abyssLord'; goldReward = 150; equipRarity = 'A-S'; }
-  else if (G.currentAct === 5) { enemyId = 'ancientDragon'; goldReward = 200; equipRarity = 'S'; }
+  else if (G.currentAct === 2) { enemyId = 'rockWorm'; goldReward = 55; equipRarity = 'B-C'; }
+  else if (G.currentAct === 3) { enemyId = 'ancientConstruct'; goldReward = 70; equipRarity = 'B-A'; }
+  else if (G.currentAct === 4) { enemyId = 'abyssLord'; goldReward = 100; equipRarity = 'A-S'; }
+  else if (G.currentAct === 5) { enemyId = 'ancientDragon'; goldReward = 140; equipRarity = 'S'; }
   else { enemyId = 'fateAvatar'; goldReward = 0; equipRarity = 'S'; }
   const bossRewards = [
     {type:'gold',val:goldReward},
@@ -360,43 +359,43 @@ function showActClear() {
       gold: 30,
       choices: [
         { text:'稀有装备宝箱', desc:'随机 D~B 级装备', result:{type:'randomEquip',rarity:'D-B'} },
-        { text:'大治疗药水 ×2 + 100 Gold', desc:'补给与财富', result:{type:'mixed',items:[{type:'addItem',itemId:'bigHealPotion',qty:2},{type:'gold',val:100}]} },
+        { text:'大治疗药水 ×2 + 60 Gold', desc:'补给与财富', result:{type:'mixed',items:[{type:'addItem',itemId:'bigHealPotion',qty:2},{type:'gold',val:60}]} },
         { text:'永久 ATK+1、DEF+1', desc:'永久属性提升', result:{type:'stats', atk:1, def:1} },
       ],
     };
   } else if (G.currentAct === 2) {
     G.actClearRewards = {
-      gold: 50,
+      gold: 40,
       choices: [
         { text:'装备宝箱', desc:'随机 C~B 级装备', result:{type:'randomEquip',rarity:'C-B'} },
-        { text:'大治疗药水 ×3 + 150 Gold', desc:'补给与财富', result:{type:'mixed',items:[{type:'addItem',itemId:'bigHealPotion',qty:3},{type:'gold',val:150}]} },
+        { text:'大治疗药水 ×2 + 80 Gold', desc:'补给与财富', result:{type:'mixed',items:[{type:'addItem',itemId:'bigHealPotion',qty:2},{type:'gold',val:80}]} },
         { text:'永久 ATK+2、SPD+1', desc:'永久属性提升', result:{type:'stats', atk:2, spd:1} },
       ],
     };
   } else if (G.currentAct === 3) {
     G.actClearRewards = {
-      gold: 70,
+      gold: 55,
       choices: [
         { text:'装备宝箱', desc:'随机 B~A 级装备', result:{type:'randomEquip',rarity:'B-A'} },
-        { text:'大治疗药水 ×4 + 200 Gold', desc:'补给与财富', result:{type:'mixed',items:[{type:'addItem',itemId:'bigHealPotion',qty:4},{type:'gold',val:200}]} },
+        { text:'大治疗药水 ×2 + 100 Gold', desc:'补给与财富', result:{type:'mixed',items:[{type:'addItem',itemId:'bigHealPotion',qty:2},{type:'gold',val:100}]} },
         { text:'永久 ATK+2、DEF+1、SPD+1', desc:'永久属性提升', result:{type:'stats', atk:2, def:1, spd:1} },
       ],
     };
   } else if (G.currentAct === 4) {
     G.actClearRewards = {
-      gold: 100,
+      gold: 80,
       choices: [
         { text:'装备宝箱', desc:'随机 A~S 级装备', result:{type:'randomEquip',rarity:'A-S'} },
-        { text:'大治疗药水 ×5 + 300 Gold', desc:'补给与财富', result:{type:'mixed',items:[{type:'addItem',itemId:'bigHealPotion',qty:5},{type:'gold',val:300}]} },
+        { text:'大治疗药水 ×3 + 130 Gold', desc:'补给与财富', result:{type:'mixed',items:[{type:'addItem',itemId:'bigHealPotion',qty:3},{type:'gold',val:130}]} },
         { text:'永久 ATK+3、DEF+2、SPD+1', desc:'永久属性提升', result:{type:'stats', atk:3, def:2, spd:1} },
       ],
     };
   } else if (G.currentAct === 5) {
     G.actClearRewards = {
-      gold: 150,
+      gold: 120,
       choices: [
         { text:'装备宝箱', desc:'随机 S~A 级装备', result:{type:'randomEquip',rarity:'A-S'} },
-        { text:'大治疗药水 ×5 + 500 Gold', desc:'补给与财富', result:{type:'mixed',items:[{type:'addItem',itemId:'bigHealPotion',qty:5},{type:'gold',val:500}]} },
+        { text:'大治疗药水 ×3 + 180 Gold', desc:'补给与财富', result:{type:'mixed',items:[{type:'addItem',itemId:'bigHealPotion',qty:3},{type:'gold',val:180}]} },
         { text:'永久 ATK+3、DEF+3、SPD+2、MaxHP+20', desc:'永久属性提升', result:{type:'stats', atk:3, def:3, spd:2, maxHp:20} },
       ],
     };

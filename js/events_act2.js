@@ -21,14 +21,14 @@ const EVENT_POOL_ACT2 = [
       ]},
       { text:'沿右侧轨道前进', conds:[], costs:[], results:[
         {type:'combat',enemy:'caveBeetle',rewards:[
-          {type:'gold',val:30},
+          {type:'gold',val:20},
           {type:'addItem',itemId:'ironOre',qty:3},
         ]},
         {type:'msg',text:'一只矿洞甲虫挡在路中央！'}
       ]},
       { text:'修理矿车滑行', conds:[{type:'atk',op:'>=',val:18}], costs:[{type:'hpCost',val:8}], results:[
         {type:'addItem',itemId:'silverOre',qty:2},
-        {type:'gold',val:25},
+        {type:'gold',val:18},
         {type:'msg',text:'你用力将矿车推上轨道，跳上去一路滑行！获得 <hl>银矿石 ×2</hl>、<hl>Gold +25</hl>。'}
       ]},
       { text:'原路绕行', conds:[], costs:[], results:[
@@ -44,7 +44,7 @@ const EVENT_POOL_ACT2 = [
     options: [
       { text:'打开铁盒', conds:[], costs:[], results:[
         {type:'addItem',itemId:'silverOre',qty:2},
-        {type:'gold',val:20},
+        {type:'gold',val:14},
         {type:'msg',text:'铁盒中有几块银矿石和金币。获得 <hl>银矿石 ×2</hl>、<hl>Gold +20</hl>。'}
       ]},
       { text:'搜查遗骸全身', conds:[{type:'luk',op:'>=',val:6}], costs:[], results:[
@@ -103,7 +103,7 @@ const EVENT_POOL_ACT2 = [
     options: [
       { text:'购买商品', conds:[], costs:[], results:[{type:'openShop'}] },
       { text:'出售物品', conds:[], costs:[], results:[{type:'openSell'}] },
-      { text:'询问矿洞情报', conds:[{type:'gold',op:'>=',val:10}], costs:[{type:'gold',val:10}], results:[
+      { text:'询问矿洞情报', conds:[{type:'gold',op:'>=',val:10}], costs:[{type:'gold',val:7}], results:[
         {type:'addItem',itemId:'goldOre',qty:1},
         {type:'msg',text:'老头接过金币，低声告诉你前方有一处隐藏的金矿脉。获得 <hl>金矿石 ×1</hl>。'}
       ]},
@@ -171,7 +171,7 @@ const EVENT_POOL_ACT2 = [
     options: [
       { text:'正面击杀', conds:[], costs:[], results:[
         {type:'combat',enemy:'youngSpider',rewards:[
-          {type:'gold',val:40},
+          {type:'gold',val:28},
           {type:'addItem',itemId:'swiftLeather',qty:1,chance:40},
         ]},
         {type:'msg',text:'你拔剑冲向幼年蛛后！'}
@@ -197,7 +197,7 @@ const EVENT_POOL_ACT2 = [
     options: [
       { text:'正面挑战', conds:[], costs:[], results:[
         {type:'combat',enemy:'beetleKing',rewards:[
-          {type:'gold',val:60},
+          {type:'gold',val:40},
           {type:'randomEquip',rarity:'C-B'},
         ]},
         {type:'msg',text:'你深吸一口气，走向矿石堆上的甲虫王！'}
@@ -210,7 +210,7 @@ const EVENT_POOL_ACT2 = [
       { text:'设置落石陷阱', conds:[{type:'atk',op:'>=',val:18}], costs:[{type:'hpCost',val:5}], results:[
         {type:'msg',text:'你推动洞顶巨石砸中甲虫王，它愤怒地朝你冲来！'},
         {type:'combat',enemy:'beetleKing',rewards:[
-          {type:'gold',val:60},
+          {type:'gold',val:40},
           {type:'randomEquip',rarity:'C-B'},
         ]},
       ]},
@@ -227,12 +227,12 @@ const EVENT_POOL_ACT2 = [
     options: [
       { text:'撬开铁门', conds:[{type:'spd',op:'>=',val:10}], costs:[], results:[
         {type:'addItem',itemId:'iceSword',qty:1},
-        {type:'gold',val:50},
-        {type:'msg',text:'你灵巧地撬开了锈锁！门后是一间密室，存放着火焰之刃和金币。获得 <hl>火焰之刃 (C)</hl>、<hl>Gold +50</hl>。'}
+        {type:'gold',val:35},
+        {type:'msg',text:'你灵巧地撬开了锈锁！门后是一间密室，存放着寒冰长剑和金币。获得 <hl>寒冰长剑 (B)</hl>、<hl>Gold +50</hl>。'}
       ]},
       { text:'暴力破门', conds:[{type:'atk',op:'>=',val:20}], costs:[{type:'hpCost',val:10}], results:[
         {type:'addItem',itemId:'chainmail',qty:1},
-        {type:'gold',val:30},
+        {type:'gold',val:20},
         {type:'msg',text:'你用肩膀撞开了铁门！获得 <hl>锁子甲 (D)</hl>、<hl>Gold +30</hl>。'}
       ]},
       { text:'从门缝窥探', conds:[{type:'luk',op:'>=',val:7}], costs:[], results:[
@@ -279,7 +279,7 @@ const EVENT_POOL_ACT2 = [
           {type:'msg',text:'回声惊飞了暗处的蝙蝠群，它们留下的粪便中混着几块未消化的矿石。获得 <hl>银矿石 ×3</hl>。'},
           {type:'addItem',itemId:'silverOre',qty:3},
         ],fail:[
-          {type:'combat',enemy:'caveBeetle',rewards:[{type:'gold',val:25}]},
+          {type:'combat',enemy:'caveBeetle',rewards:[{type:'gold',val:18}]},
           {type:'msg',text:'回声惊动了一只矿洞甲虫！'},
         ]},
       ]},
@@ -327,7 +327,7 @@ const EVENT_POOL_ACT2 = [
     options: [
       { text:'乘坐矿车滑下', conds:[], costs:[], results:[
         {type:'lukCheck',threshold:45,success:[
-          {type:'gold',val:40},
+          {type:'gold',val:28},
           {type:'addItem',itemId:'silverOre',qty:2},
           {type:'msg',text:'矿车平稳地滑过矿道，直接冲到一处富矿脉附近！获得 <hl>Gold +40</hl>、<hl>银矿石 ×2</hl>。'}
         ],fail:[
@@ -336,7 +336,7 @@ const EVENT_POOL_ACT2 = [
         ]},
       ]},
       { text:'检修刹车后乘坐', conds:[{type:'atk',op:'>=',val:15}], costs:[], results:[
-        {type:'gold',val:30},
+        {type:'gold',val:20},
         {type:'msg',text:'你加固了刹车装置，矿车平稳地滑到了矿道深处。获得 <hl>Gold +30</hl>。'}
       ]},
       { text:'沿轨道步行', conds:[], costs:[], results:[

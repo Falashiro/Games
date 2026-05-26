@@ -48,7 +48,7 @@ const EVENT_POOL_ACT3 = [
         {type:'msg',text:'你浸入泉水中，所有伤口愈合，负面效果也随之消散。<hp>完全恢复 HP</hp>，负面Buff已清除。'}
       ]},
       { text:'捞取泉底硬币', conds:[{type:'spd',op:'>=',val:9}], costs:[], results:[
-        {type:'gold',val:60},
+        {type:'gold',val:40},
         {type:'addItem',itemId:'ancientCoin',qty:1},
         {type:'msg',text:'你在不搅浑泉水的情况下捞起了硬币。获得 <hl>Gold +60</hl>、<hl>古代硬币 ×1</hl>。'}
       ]},
@@ -79,7 +79,7 @@ const EVENT_POOL_ACT3 = [
       ]},
       { text:'暴力砸开', conds:[{type:'atk',op:'>=',val:22}], costs:[], results:[
         {type:'addItem',itemId:'powerRing',qty:1},
-        {type:'gold',val:40},
+        {type:'gold',val:28},
         {type:'msg',text:'你一拳砸碎了锁扣，但金属盒也受损了。获得 <hl>力量戒指 (D)</hl>、<hl>Gold +40</hl>。'}
       ]},
       { text:'用符文碎片解锁', conds:[{type:'hasItem',itemId:'runeShard'}], costs:[{type:'loseItem',itemId:'runeShard',qty:1}], results:[
@@ -105,7 +105,7 @@ const EVENT_POOL_ACT3 = [
     options: [
       { text:'购买商品', conds:[], costs:[], results:[{type:'openShop'}] },
       { text:'出售物品', conds:[], costs:[], results:[{type:'openSell'}] },
-      { text:'用法师的魔法强化装备', conds:[{type:'gold',op:'>=',val:80}], costs:[{type:'gold',val:80}], results:[
+      { text:'用法师的魔法强化装备', conds:[{type:'gold',op:'>=',val:120}], costs:[{type:'gold',val:80}], results:[
         {type:'enhanceEquip'},
         {type:'msg',text:'法师挥动法杖，一道魔法光芒笼罩了你的装备。'}
       ]},
@@ -123,16 +123,16 @@ const EVENT_POOL_ACT3 = [
         {type:'msg',text:'你助跑后一个飞跃跨过了裂缝，在对面发现了古代硬币。获得 <hl>古代硬币 ×2</hl>。'}
       ]},
       { text:'攀爬铁链荡过去', conds:[{type:'atk',op:'>=',val:20}], costs:[], results:[
-        {type:'addItem',itemId:'treasureAmulet',qty:1},
-        {type:'gold',val:30},
-        {type:'msg',text:'你抓住铁链荡到了对面，发现了一个被遗忘的小宝箱！获得 <hl>寻宝护符 (B)</hl>、<hl>Gold +30</hl>。'}
+        {type:'addItem',itemId:'guardRing',qty:1},
+        {type:'gold',val:20},
+        {type:'msg',text:'你抓住铁链荡到了对面，发现了一个被遗忘的小宝箱！获得 <hl>守护戒指 (B)</hl>、<hl>Gold +30</hl>。'}
       ]},
       { text:'用符文碎片搭桥', conds:[{type:'hasItem',itemId:'runeShard'}], costs:[{type:'loseItem',itemId:'runeShard',qty:1}], results:[
         {type:'addItem',itemId:'runeStoneSpd',qty:1},
         {type:'msg',text:'你用符文碎片激活了残存的魔法桥梁，安全通过并找到了一枚符文石。获得 <hl>符文石·速 (B)</hl>。'}
       ]},
       { text:'爬下沟底绕行', conds:[], costs:[{type:'hpCost',val:15}], results:[
-        {type:'gold',val:45},
+        {type:'gold',val:30},
         {type:'msg',text:'你小心翼翼地爬下沟底，捡到了几枚散落的金币。获得 <hl>Gold +45</hl>。'}
       ]},
     ],
@@ -145,7 +145,7 @@ const EVENT_POOL_ACT3 = [
     options: [
       { text:'正面战斗', conds:[], costs:[], results:[
         {type:'combat',enemy:'fireGuard',rewards:[
-          {type:'gold',val:50},
+          {type:'gold',val:35},
           {type:'addItem',itemId:'vampFang',qty:1,chance:40},
         ]},
         {type:'msg',text:'烈焰守卫挥动着熔岩之拳朝你冲来！'}
@@ -170,12 +170,12 @@ const EVENT_POOL_ACT3 = [
     desc: '一扇镶嵌着宝石的厚重石门半开着。门内的宝库中，金币和珠宝堆积如山。但在宝库中央，一具戴着王冠的骷髅端坐在宝座上，骷髅眼窝中燃烧着幽绿的火焰。墙上的铭文警告道："贪者受诅，敬者得赐。"',
     options: [
       { text:'恭敬取走一份贡品', conds:[], costs:[], results:[
-        {type:'gold',val:60},
+        {type:'gold',val:40},
         {type:'randomEquip',rarity:'C'},
         {type:'msg',text:'你向骷髅鞠躬后取走了一小份，骷髅的火焰似乎缓和了些。获得 <hl>Gold +60</hl>。'}
       ]},
       { text:'大量拿取财宝', conds:[], costs:[], results:[
-        {type:'gold',val:150},
+        {type:'gold',val:100},
         {type:'actStat',key:'luk',val:-2},
         {type:'msg',text:'你贪婪地往背包里塞满金币。骷髅的火焰猛烈燃烧——你感到厄运降临！<hl>Gold +150</hl>，但 <hl>LUK −2</hl>（本幕内有效）。'}
       ]},
@@ -186,7 +186,7 @@ const EVENT_POOL_ACT3 = [
       { text:'检查王冠', conds:[{type:'def',op:'>=',val:10}], costs:[{type:'hpCost',val:8}], results:[
         {type:'combat',enemy:'curseGuard',rewards:[
           {type:'addItem',itemId:'shadowBlade',qty:1},
-          {type:'gold',val:30},
+          {type:'gold',val:20},
         ]},
         {type:'msg',text:'王冠下藏着一把暗影之刃！但触碰王冠惊醒了守卫。'}
       ]},
@@ -229,7 +229,7 @@ const EVENT_POOL_ACT3 = [
       ]},
       { text:'淬炼武器', conds:[{type:'hasItem',itemId:'silverOre',qty:2}], costs:[{type:'loseItem',itemId:'silverOre',qty:2}], results:[
         {type:'addItem',itemId:'vampFang',qty:1},
-        {type:'msg',text:'你将银矿石投入熔炉淬炼剑胚！获得 <hl>火焰之刃 (C)</hl>。'}
+        {type:'msg',text:'你将银矿石投入熔炉淬炼剑胚！获得 <hl>吸血之牙 (C)</hl>。'}
       ]},
       { text:'重铸精炼', conds:[{type:'hasItem',itemId:'goldOre'}], costs:[{type:'loseItem',itemId:'goldOre',qty:1},{type:'chooseItem'}], results:[
         {type:'stat',key:'atk',val:2},

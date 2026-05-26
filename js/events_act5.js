@@ -8,16 +8,16 @@ const EVENT_POOL_ACT5 = [
     desc:'一条宽阔的熔岩河横在前方。河面上漂浮着半熔化的金块和宝石，在炽热的光芒下闪闪发光。河边有几块黑曜岩石可以垫脚。',
     options:[
       { text:'用矿石制作耐热容器捞金', conds:[{type:'hasItem',itemId:'goldOre',qty:2}], costs:[{type:'loseItem',itemId:'goldOre',qty:2}], results:[
-        {type:'gold',val:120},
+        {type:'gold',val:80},
         {type:'addItem',itemId:'ancientCoin',qty:3},
         {type:'msg',text:'你用金矿石制成了耐热容器，捞起了熔岩中的财宝！获得 <hl>Gold +120</hl>、<hl>古代硬币 ×3</hl>。'}
       ]},
       { text:'踩着黑曜石渡河', conds:[{type:'spd',op:'>=',val:16}], costs:[{type:'hpCost',val:15}], results:[
-        {type:'gold',val:60},
+        {type:'gold',val:40},
         {type:'msg',text:'你踏着滚烫的黑曜石跳过了熔岩河。获得 <hl>Gold +60</hl>。'}
       ]},
       { text:'用龙鳞隔热渡河', conds:[{type:'hasItem',itemId:'dragonScaleFrag'}], costs:[{type:'loseItem',itemId:'dragonScaleFrag',qty:1}], results:[
-        {type:'gold',val:80},
+        {type:'gold',val:55},
         {type:'addItem',itemId:'goldOre',qty:3},
         {type:'msg',text:'龙鳞的隔热效果让你安全渡河。获得 <hl>Gold +80</hl>、<hl>金矿石 ×3</hl>。'}
       ]},
@@ -76,7 +76,7 @@ const EVENT_POOL_ACT5 = [
     desc:'三只半人高的幼年火龙正趴在金币堆上打盹。金币堆的最上方，一把泛着金光的武器格外醒目。',
     options:[
       { text:'击败幼龙夺取武器', conds:[], costs:[], results:[
-        {type:'combat',enemy:'youngDragon',rewards:[{type:'addItem',itemId:'dragonFang',qty:1},{type:'gold',val:120}]},
+        {type:'combat',enemy:'youngDragon',rewards:[{type:'addItem',itemId:'dragonFang',qty:1},{type:'gold',val:80}]},
         {type:'msg',text:'幼龙们被惊醒，愤怒地朝你喷出火焰！'}
       ]},
       { text:'悄悄偷走武器', conds:[{type:'spd',op:'>=',val:20}], costs:[], results:[
@@ -85,7 +85,7 @@ const EVENT_POOL_ACT5 = [
       ]},
       { text:'用食物引诱幼龙', conds:[{type:'hasItem',itemId:'glowMushroom',qty:3}], costs:[{type:'loseItem',itemId:'glowMushroom',qty:3}], results:[
         {type:'addItem',itemId:'dragonFang',qty:1},
-        {type:'gold',val:80},
+        {type:'gold',val:55},
         {type:'msg',text:'幼龙们追着荧光蘑菇跑开了。获得 <hl>龙牙 (S)</hl>、<hl>Gold +80</hl>。'}
       ]},
       { text:'不惊动幼龙', conds:[], costs:[], results:[{type:'msg',text:'你悄悄退出了巢穴。'}] },
@@ -135,7 +135,7 @@ const EVENT_POOL_ACT5 = [
         {type:'msg',text:'三片龙鳞同时激活了所有石碑！<hl>永久 ATK+5 DEF+3 SPD+3</hl>！'}
       ]},
       { text:'砸碎石碑取走金粉', conds:[{type:'atk',op:'>=',val:35}], costs:[{type:'hpCost',val:25}], results:[
-        {type:'gold',val:200},
+        {type:'gold',val:130},
         {type:'addItem',itemId:'dragonScaleFrag',qty:2},
         {type:'msg',text:'你砸碎石碑取走了上面的金粉。获得 <hl>Gold +200</hl>、<hl>龙鳞碎片 ×2</hl>。'}
       ]},
@@ -149,15 +149,15 @@ const EVENT_POOL_ACT5 = [
     desc:'前方的通道完全被岩浆覆盖，只有几根石柱可以落脚。通道尽头，一只巨大的熔岩元素正在岩浆中沐浴。',
     options:[
       { text:'挑战熔岩元素', conds:[], costs:[], results:[
-        {type:'combat',enemy:'lavaElemental',rewards:[{type:'gold',val:130},{type:'randomEquip',rarity:'A'}]},
+        {type:'combat',enemy:'lavaElemental',rewards:[{type:'gold',val:85},{type:'randomEquip',rarity:'A'}]},
         {type:'msg',text:'熔岩元素凝聚成燃烧的拳头！'}
       ]},
       { text:'跳跃石柱通过', conds:[{type:'spd',op:'>=',val:22}], costs:[], results:[
-        {type:'gold',val:50},
+        {type:'gold',val:35},
         {type:'msg',text:'你在石柱间轻盈跳跃，安全通过。获得 <hl>Gold +50</hl>。'}
       ]},
       { text:'用冰属性武器冻结岩浆', conds:[{type:'hasItem',itemId:'iceSword'}], costs:[], results:[
-        {type:'gold',val:80},
+        {type:'gold',val:55},
         {type:'msg',text:'寒冰长剑冻结了岩浆，你从容走过。获得 <hl>Gold +80</hl>。'}
       ]},
       { text:'投石引开熔岩元素', conds:[{type:'atk',op:'>=',val:35}], costs:[{type:'hpCost',val:10}], results:[
@@ -170,7 +170,7 @@ const EVENT_POOL_ACT5 = [
     desc:'一扇龙脊骨巨门半开着，门后走廊铺满黄金。走廊尽头是一张巨大的龙床——但上面并没有龙。宝箱中的宝物几乎溢出来。',
     options:[
       { text:'搜刮宝箱', conds:[], costs:[], results:[
-        {type:'gold',val:200},
+        {type:'gold',val:130},
         {type:'randomEquip',rarity:'S'},
         {type:'buff',name:'龙之诅咒',battles:99,effects:{poisonDmg:8}},
         {type:'msg',text:'你大肆搜刮宝箱，但触发了龙之诅咒！<hl>Gold +200</hl> + S级装备，但本幕剩余战斗每回合损失8HP。'}
@@ -181,7 +181,7 @@ const EVENT_POOL_ACT5 = [
         {type:'msg',text:'族谱揭示了龙血的秘密。<hl>永久 MaxHP +30</hl> + HP回满。'}
       ]},
       { text:'取少量贡品', conds:[], costs:[], results:[
-        {type:'gold',val:100},
+        {type:'gold',val:70},
         {type:'randomEquip',rarity:'A'},
         {type:'msg',text:'你恭敬地取了一小份。<hl>Gold +100</hl> + A级装备，无副作用。'}
       ]},

@@ -18,7 +18,7 @@ const EVENT_POOL_ACT6 = [
       { text:'出售物品', conds:[], costs:[], results:[{type:'openSell'}] },
       { text:'用星尘碎片交易', conds:[{type:'hasItem',itemId:'starDust',qty:3}], costs:[{type:'loseItem',itemId:'starDust',qty:3}], results:[
         {type:'addItem',itemId:'destinyStar',qty:1},
-        {type:'gold',val:100},
+        {type:'gold',val:70},
         {type:'msg',text:'老者接过星尘碎片，递给你命运之星。获得 <hl>命运之星 (S)</hl>、<hl>Gold +100</hl>。'}
       ]},
       { text:'离开', conds:[], costs:[], results:[{type:'msg',text:'你向老者微微鞠躬，继续漂浮前行。'}] },
@@ -55,7 +55,7 @@ const EVENT_POOL_ACT6 = [
     options:[
       { text:'适应重力场行走', conds:[{type:'spd',op:'>=',val:25}], costs:[{type:'hpCost',val:15}], results:[
         {type:'addItem',itemId:'starDust',qty:3},
-        {type:'gold',val:80},
+        {type:'gold',val:55},
         {type:'msg',text:'你艰难地适应了重力场，取到了宝珠。获得 <hl>星尘碎片 ×3</hl>、<hl>Gold +80</hl>。'}
       ]},
       { text:'用装备增加重量', conds:[{type:'atk',op:'>=',val:42}], costs:[], results:[
@@ -154,7 +154,7 @@ const EVENT_POOL_ACT6 = [
     desc:'一道撕裂空间的裂缝中涌出一头被放逐的虚空巨兽。它是无数世界毁灭的见证者，以吞噬希望为食。',
     options:[
       { text:'正面迎战', conds:[], costs:[], results:[
-        {type:'combat',enemy:'voidBeast',rewards:[{type:'gold',val:200},{type:'randomEquip',rarity:'S'},{type:'randomEquip',rarity:'S'}]},
+        {type:'combat',enemy:'voidBeast',rewards:[{type:'gold',val:130},{type:'randomEquip',rarity:'S'},{type:'randomEquip',rarity:'S'}]},
         {type:'msg',text:'虚空巨兽张开布满星辰的大口！'}
       ]},
       { text:'用星尘安抚巨兽', conds:[{type:'hasItem',itemId:'starDust',qty:5}], costs:[{type:'loseItem',itemId:'starDust',qty:5}], results:[

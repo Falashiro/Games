@@ -307,20 +307,18 @@ function renderCombat(app) {
 }
 
 function getBossInfo() {
-  if (G.currentAct === 1) return { name:'洞穴巨蛛', hp:40, atk:6, def:2, spd:5, traitDesc:'毒液：每 3 回合造成 3 点额外伤害（无视防御）' };
-  if (G.currentAct === 2) return { name:'岩石巨虫', hp:65, atk:10, def:4, spd:4, traitDesc:'酸液喷吐：每 4 回合造成 5 点伤害；结晶甲壳：前 2 回合减免 3 点伤害' };
-  if (G.currentAct === 3) return { name:'古代构装体', hp:90, atk:14, def:6, spd:7, traitDesc:'多重攻击：每 3 回合连续攻击 2 次；能量护盾：HP<30% 时 DEF+4' };
-  if (G.currentAct === 4) return { name:'深渊之主', hp:120, atk:22, def:9, spd:9, traitDesc:'黑暗吞噬：每5回合造成10伤害并降ATK3；多重眼瞳：每3回合额外攻击一次' };
-  if (G.currentAct === 5) return { name:'古龙之王', hp:160, atk:28, def:12, spd:11, traitDesc:'龙息：每4回合造成15伤害；龙威：前3回合玩家ATK−3；激怒：HP<40%时ATK+8 SPD+4' };
-  if (G.currentAct === 6) return { name:'命运化身', hp:220, atk:38, def:16, spd:16, traitDesc:'命运轮转：每5回合随机±5属性；因果反噬：每3回合反弹30%伤害；终末审判：HP<20%时连续攻击3次' };
+  if (G.currentAct === 1) return { name:'洞穴巨蛛', hp:45, atk:7, def:2, spd:5, traitDesc:'毒液：每 3 回合造成 3 点额外伤害（无视防御）' };
+  if (G.currentAct === 2) return { name:'岩石巨虫', hp:72, atk:11, def:4, spd:4, traitDesc:'酸液喷吐：每 4 回合造成 5 点伤害；结晶甲壳：前 2 回合减免 3 点伤害' };
+  if (G.currentAct === 3) return { name:'古代构装体', hp:100, atk:15, def:6, spd:7, traitDesc:'多重攻击：每 3 回合连续攻击 2 次；能量护盾：HP<30% 时 DEF+4' };
+  if (G.currentAct === 4) return { name:'深渊之主', hp:132, atk:24, def:9, spd:9, traitDesc:'黑暗吞噬：每5回合造成10伤害并降ATK3；多重眼瞳：每3回合额外攻击一次' };
+  if (G.currentAct === 5) return { name:'古龙之王', hp:176, atk:30, def:12, spd:11, traitDesc:'龙息：每4回合造成15伤害；龙威：前3回合玩家ATK−3；激怒：HP<40%时ATK+8 SPD+4' };
+  if (G.currentAct === 6) return { name:'命运化身', hp:240, atk:40, def:16, spd:16, traitDesc:'命运轮转：每5回合ATK或DEF+5；因果反噬：每3回合反弹30%伤害；终末审判：HP<20%时连续攻击3次' };
   return { name:'?', hp:0, atk:0, def:0, spd:0, traitDesc:'' };
 }
 
-function showResultMessages(messages, hpDiff) {
-  if (hpDiff < 0) {
-    messages.unshift(`<loss>HP ${hpDiff}</loss>`);
-  } else if (hpDiff > 0) {
-    messages.unshift(`<hp>HP +${hpDiff}</hp>`);
+function showResultMessages(messages, costHpLoss) {
+  if (costHpLoss > 0) {
+    messages.unshift(`<loss>HP −${costHpLoss}</loss>`);
   }
   G.pendingResult = messages.join('<br>');
   G.pendingResultContinue = function() { nextEvent(); };
@@ -414,8 +412,15 @@ function confirmCombatEnd() {
     }
     G.pendingCombatRewards = null;
   }
+  // Handle full inventory items from combat
+  if (G.pendingFullItems && G.pendingFullItems.length > 0) {
+    const items = [...G.pendingFullItems];
+    G.pendingFullItems = null;
+    let resultText = rewardLines.length > 0 ? rewardLines.join('<br>') : '战斗胜利！';
+    showFullInventoryPopup([resultText], 0);
+    return;
+  }
   // Show rewards in event-result style
-  const hpLost = G.combatState ? 0 : 0; // HP change already reflected
   let resultText = rewardLines.length > 0 ? rewardLines.join('<br>') : '战斗胜利！';
   G.pendingResult = resultText;
   G.pendingResultContinue = function() { afterCombatResult(); };
@@ -494,10 +499,17 @@ function renderGameOver(app) {
 function renderShop(app) {
   const event = currentEvent();
   if (G.shopMode === 'buy' && event.shopItems) {
+    if (!G.shopPurchased) G.shopPurchased = [];
+    // Pick 4 random items from pool
+    if (!G._shopSelection) {
+      const shuffled = [...event.shopItems].sort(() => Math.random() - 0.5);
+      G._shopSelection = shuffled.slice(0, Math.min(4, shuffled.length));
+    }
     let itemsHtml = '';
-    for (const si of event.shopItems) {
+    for (const si of G._shopSelection) {
       const item = ITEMS[si.itemId];
-      const canBuy = G.player.gold >= si.price;
+      const purchased = G.shopPurchased.includes(si.itemId);
+      const canBuy = G.player.gold >= si.price && !purchased;
       let statDesc = [];
       if (item.type === 'weapon' || item.type === 'armor' || item.type === 'accessory') {
         if (item.atk) statDesc.push(`ATK+${item.atk}`);
@@ -519,7 +531,7 @@ function renderShop(app) {
           </div>
           <div style="display:flex;align-items:center;gap:8px">
             <span style="color:#b8860b;font-weight:bold;font-size:13px">${si.price} G</span>
-            <button class="buy-btn" ${canBuy?'':'disabled'} onclick="buyShopItem('${si.itemId}',${si.price})">购买</button>
+            <button class="buy-btn" ${canBuy?'':'disabled'} onclick="buyShopItem('${si.itemId}',${si.price})">${purchased ? '已售罄' : '购买'}</button>
           </div>
         </div>`;
     }
@@ -566,6 +578,7 @@ function renderShop(app) {
 
 function buyShopItem(itemId, price) {
   if (G.player.gold < price) return;
+  if (G.shopPurchased && G.shopPurchased.includes(itemId)) return;
   const item = ITEMS[itemId];
   if (!item) return;
   const stackable = ['consumable','material'].includes(item.type);
@@ -576,6 +589,8 @@ function buyShopItem(itemId, price) {
   }
   G.player.gold -= price;
   addItem(itemId, 1);
+  if (!G.shopPurchased) G.shopPurchased = [];
+  G.shopPurchased.push(itemId);
   render();
 }
 
@@ -590,6 +605,8 @@ function sellItem(uid, qty) {
 
 function closeShop() {
   G.shopMode = false;
+  G.shopPurchased = [];
+  G._shopSelection = null;
   nextEvent();
 }
 
@@ -621,7 +638,7 @@ function traitDesc(trait) {
     // 第六幕
     starBurn: '星光灼烧：每回合造成 4 点伤害（无视防御）| 虚空闪避：每 3 回合闪避一次攻击',
     voidBeast: '虚空吐息：每 4 回合造成 12 伤害 | 黑暗之心：HP<30% 时每回合恢复 10 HP | 维度撕裂：每 3 回合降全属性 2',
-    fateLord: '命运轮转：每 5 回合随机±5 属性 | 因果反噬：每 3 回合反弹 30% 伤害 | 终末审判：HP<20% 时连续攻击 3 次',
+    fateLord: '命运轮转：每 5 回合 ATK 或 DEF +5 | 因果反噬：每 3 回合反弹 30% 伤害 | 终末审判：HP<20% 时连续攻击 3 次',
   };
   return map[trait] || trait || '';
 }
@@ -832,13 +849,13 @@ async function confirmItemSacrifice(optIndex, itemUid) {
   const remainingCosts = opt.costs.filter(c => c.type !== 'chooseItem');
   const hpBefore = G.player.hp;
   applyCosts(remainingCosts);
+  const hpAfterCosts = G.player.hp;
   const messages = await applyResults(opt.results);
-  const hpDiff = G.player.hp - hpBefore;
   if (G.shopMode) { render(); return; }
   if (G.phase === 'combat' || G.phase === 'combatEnd') return;
   if (G.pendingFullItems && G.pendingFullItems.length > 0) {
-    showFullInventoryPopup(messages, hpDiff);
+    showFullInventoryPopup(messages, hpBefore - hpAfterCosts);
     return;
   }
-  showResultMessages(messages, hpDiff);
+  showResultMessages(messages, hpBefore - hpAfterCosts);
 }
