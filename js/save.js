@@ -16,6 +16,7 @@ function saveGame() {
     combatLog: G.combatLog,
     pendingResult: G.pendingResult,
     pendingResultContinue: null,
+    actMods: G.actMods,
     uidCounter,
   };
   localStorage.setItem('game2_save', JSON.stringify(data));
@@ -37,6 +38,7 @@ function loadGame() {
     G.combatLog = data.combatLog || [];
     G.pendingResult = data.pendingResult || null;
     G.pendingResultContinue = null;
+    G.actMods = data.actMods || null;
     uidCounter = data.uidCounter || 1;
     G.phase = data.phase || 'event';
     G.shopMode = false;

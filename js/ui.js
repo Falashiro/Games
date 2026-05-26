@@ -778,6 +778,8 @@ function equipItem(uid) {
   for (const [slot, euid] of Object.entries(G.equipment)) {
     if (euid === uid) {
       G.equipment[slot] = null;
+      if (item.maxHp) G.player.maxHp -= item.maxHp;
+      G.player.hp = Math.min(G.player.maxHp, G.player.hp);
       saveGame();
       render();
       return;
@@ -794,6 +796,7 @@ function equipItem(uid) {
     else if (!G.equipment.acc2) G.equipment.acc2 = uid;
     else G.equipment.acc1 = uid;
   }
+  if (item.maxHp) G.player.maxHp += item.maxHp;
   saveGame();
   render();
 }

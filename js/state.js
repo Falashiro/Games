@@ -51,7 +51,6 @@ function totalStats() {
     if (es.def) s.def += es.def;
     if (es.spd) s.spd += es.spd;
     if (es.luk) s.luk += es.luk;
-    if (es.maxHp) s.maxHp += es.maxHp;
   }
   for (const b of G.buffs) {
     if (b.effects.atk) s.atk += b.effects.atk;
@@ -85,7 +84,10 @@ function removeItem(uid, qty) {
   if (idx < 0) return false;
   const item = G.inventory[idx];
   for (const [slot, equid] of Object.entries(G.equipment)) {
-    if (equid === uid) G.equipment[slot] = null;
+    if (equid === uid) {
+      G.equipment[slot] = null;
+      if (item.maxHp) { G.player.maxHp -= item.maxHp; G.player.hp = Math.min(G.player.maxHp, G.player.hp); }
+    }
   }
   if (item.qty > qty) {
     item.qty -= qty;

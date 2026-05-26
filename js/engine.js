@@ -256,8 +256,14 @@ async function applyResults(results) {
       case 'randomEquip': {
         const equipId = rollRandomEquip(r.rarity);
         if (equipId) {
-          addItem(equipId, 1);
-          messages.push(`获得 <hl>${ITEMS[equipId].name} (${ITEMS[equipId].rarity})</hl>`);
+          const result = addItem(equipId, 1);
+          if (result.full) {
+            if (!G.pendingFullItems) G.pendingFullItems = [];
+            G.pendingFullItems.push({ itemId: equipId, qty: 1 });
+            messages.push(`⚠ 物品栏已满！`);
+          } else {
+            messages.push(`获得 <hl>${ITEMS[equipId].name} (${ITEMS[equipId].rarity})</hl>`);
+          }
         }
         break;
       }
@@ -271,6 +277,13 @@ async function applyResults(results) {
         }
         break;
       }
+      case 'clearDebuffs':
+        G.buffs = G.buffs.filter(b => !b.effects.poisonDmg);
+        break;
+      case 'clearInventory':
+        G.inventory = [];
+        G.equipment = { weapon:null, armor:null, acc1:null, acc2:null };
+        break;
       case 'openShop':
         G.shopMode = 'buy';
         break;
@@ -427,7 +440,8 @@ function pickActClearReward(idx) {
   G.pendingResult = resultLines.join('<br>');
   G.pendingResultContinue = function() {
     G.pendingResult = null; G.pendingResultContinue = null;
-    // Clear act-scoped stat mods
+    // Clear all buffs and act-scoped stat mods
+    G.buffs = [];
     if (G.actMods) {
       G.player.atk -= G.actMods.atk;
       G.player.def -= G.actMods.def;

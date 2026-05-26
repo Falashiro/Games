@@ -176,7 +176,14 @@ const EVENT_POOL_ACT6 = [
     desc:'三扇门悬浮在虚空中。一扇映着你最初的模样，一扇映着最艰难的一战，一扇映着从未发生的未来。"选择吧。"',
     options:[
       { text:'进入过去之门', conds:[], costs:[], results:[
-        {type:'msg',text:'你选择回到起点——失去所有装备和物品，但获得了最纯粹的力量。'},
+        {type:'clearInventory'},
+        {type:'stat',key:'atk',val:10},
+        {type:'stat',key:'def',val:10},
+        {type:'stat',key:'spd',val:10},
+        {type:'stat',key:'luk',val:10},
+        {type:'maxHp',val:100},
+        {type:'heal',val:999},
+        {type:'msg',text:'你选择回到起点——所有装备和物品化为光点消散，但最纯粹的力量涌入体内！<hl>全属性 +10、MaxHP +100</hl>。'},
       ]},
       { text:'进入现在之门', conds:[], costs:[], results:[
         {type:'enhanceEquip'},
@@ -202,7 +209,8 @@ const EVENT_POOL_ACT6 = [
     options:[
       { text:'充分休息', conds:[], costs:[], results:[
         {type:'heal',val:999},
-        {type:'msg',text:'你在石床上沉沉睡去。<hp>HP完全恢复</hp>。'}
+        {type:'clearDebuffs'},
+        {type:'msg',text:'你在石床上沉沉睡去，醒来时身心焕然一新。<hp>HP完全恢复</hp>，负面Buff已清除。'}
       ]},
       { text:'在泉水中沐浴', conds:[], costs:[], results:[
         {type:'heal',val:999},

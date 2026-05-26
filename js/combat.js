@@ -116,7 +116,7 @@ async function simulateCombatRound() {
     if (G.player.hp <= 0) { endCombat(false, logLines); return; }
   }
   if (enemy.trait === 'abyssLord') {
-    if (cs.round % 5 === 0) { G.player.hp -= 10; if (!G.buffs.some(b => b.effects && b.effects.immuneDebuff)) G.player.atk -= 3; logLines.push(`[黑暗吞噬] 深渊之主造成 10 伤害并降低 ATK 3！`); }
+    if (cs.round % 5 === 0) { G.player.hp -= 10; if (!G.buffs.some(b => b.effects && b.effects.immuneDebuff)) G.player.atk = Math.max(0, G.player.atk - 3); logLines.push(`[黑暗吞噬] 深渊之主造成 10 伤害并降低 ATK 3！`); }
     if (G.player.hp <= 0) { endCombat(false, logLines); return; }
   }
   // Act 5+
@@ -136,7 +136,7 @@ async function simulateCombatRound() {
     if (G.player.hp <= 0) { endCombat(false, logLines); return; }
   }
   if (enemy.trait === 'dragonLord') {
-    if (cs.round <= 3) { if (cs.round === 1 && !G.buffs.some(b => b.effects && b.effects.immuneDebuff)) { enemy._dragonAtk = G.player.atk; G.player.atk -= 3; logLines.push(`[龙威] 古龙之王的威压降低了你的 ATK！ATK −3`); } }
+    if (cs.round <= 3) { if (cs.round === 1 && !G.buffs.some(b => b.effects && b.effects.immuneDebuff)) { enemy._dragonAtk = G.player.atk; G.player.atk = Math.max(0, G.player.atk - 3); logLines.push(`[龙威] 古龙之王的威压降低了你的 ATK！ATK −3`); } }
     if (cs.round % 4 === 0) { G.player.hp -= 15; logLines.push(`[龙息] 古龙之王喷出龙息！造成 15 点伤害！`); if (G.player.hp <= 0) { endCombat(false, logLines); return; } }
     if (enemy.hp < enemy.maxHp * 0.4 && !enemy._enraged) { enemy._enraged = true; enemy.atk += 8; enemy.spd += 4; logLines.push(`[激怒] 古龙之王陷入狂暴！ATK +8, SPD +4`); }
   }

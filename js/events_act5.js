@@ -66,6 +66,9 @@ const EVENT_POOL_ACT5 = [
         {type:'buff',name:'龙骨加护',battles:5,effects:{def:4}},
         {type:'msg',text:'龙骨的精魂赋予你庇护。<hl>永久 SPD+3</hl> + 获得 <hl>龙骨加护</hl>（下5次战斗 DEF+4）。'}
       ]},
+      { text:'绕开龙骨祭坛', conds:[], costs:[], results:[
+        {type:'msg',text:'你感到自己还不足以承受龙骨的力量，绕开了祭坛。'}
+      ]},
     ],
   },
   // ---- 幼龙巢穴 ----

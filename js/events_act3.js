@@ -44,6 +44,7 @@ const EVENT_POOL_ACT3 = [
       ]},
       { text:'在泉中沐浴', conds:[{type:'hp',op:'>=',val:50}], costs:[{type:'hpCost',val:10}], results:[
         {type:'heal',val:999},
+        {type:'clearDebuffs'},
         {type:'msg',text:'你浸入泉水中，所有伤口愈合，负面效果也随之消散。<hp>完全恢复 HP</hp>，负面Buff已清除。'}
       ]},
       { text:'捞取泉底硬币', conds:[{type:'spd',op:'>=',val:9}], costs:[], results:[
