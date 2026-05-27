@@ -15,7 +15,8 @@ function startCombat(enemyId, rewards) {
     spd: template.spd,
     trait: template.trait,
   };
-  G.combatState = { enemy, round: 1, playerStartHp: G.player.hp, rewards: rewards || [] };
+  G.combatState = { enemy, round: 1, playerStartHp: G.player.hp, rewards: rewards || [],
+    baseAtk: G.player.atk, baseDef: G.player.def, baseSpd: G.player.spd, baseLuk: G.player.luk };
   G.phase = 'combat';
   G.combatLog = [];
   G.battling = false;
@@ -188,34 +189,29 @@ async function simulateCombatRound() {
     logLines.push(`[酸液喷吐] ${enemy.name}的酸液造成 5 点伤害！（无视防御）`);
     if (G.player.hp <= 0) { endCombat(false, logLines); return; }
   }
-  // Hard shell / acid armor: temporary DEF bonus
-  if (enemy.trait === 'hardShell' && cs.round <= 2) {
+  // Hard shell / acid armor: temporary DEF bonus (apply once)
+  if (enemy.trait === 'hardShell' && cs.round === 1) {
     enemy.def += 2;
-    if (cs.round === 1) logLines.push(`[硬壳] ${enemy.name}的甲壳提升了防御！DEF +2`);
+    logLines.push(`[硬壳] ${enemy.name}的甲壳提升了防御！DEF +2`);
   }
-  if (enemy.trait === 'eliteBeetle' && cs.round <= 3) {
+  if (enemy.trait === 'eliteBeetle' && cs.round === 1) {
     enemy.def += 3;
-    if (cs.round === 1) logLines.push(`[硬壳] 甲虫王的甲壳提升了防御！DEF +3`);
+    logLines.push(`[硬壳] 甲虫王的甲壳提升了防御！DEF +3`);
   }
-  if (enemy.trait === 'acidArmor' && cs.round <= 2) {
+  if (enemy.trait === 'acidArmor' && cs.round === 1) {
     enemy.def += 3;
-    if (cs.round === 1) logLines.push(`[结晶甲壳] ${enemy.name}的结晶甲壳减免伤害！`);
+    logLines.push(`[结晶甲壳] ${enemy.name}的结晶甲壳减免伤害！`);
   }
-  // Enrage: elite beetle
-  if (enemy.trait === 'eliteBeetle' && enemy.hp < enemy.maxHp / 2 && cs.round === Math.ceil((enemy.maxHp/2)/Math.max(1,pAtk-enemy.def))) {
-    // Just apply once when first check passes
-  }
-  // Energy shield: ancient construct
-  if (enemy.trait === 'multiAttack' && enemy.hp < enemy.maxHp * 0.3) {
+  // Energy shield: ancient construct (apply once)
+  if (enemy.trait === 'multiAttack' && enemy.hp < enemy.maxHp * 0.3 && !enemy._shielded) {
+    enemy._shielded = true;
     enemy.def += 4;
-    if (cs.round === Math.ceil((enemy.maxHp*0.7)/Math.max(1,pAtk-enemy.def))) {
-      logLines.push(`[能量护盾] 古代构装体激活护盾！DEF +4`);
-    }
+    logLines.push(`[能量护盾] 古代构装体激活护盾！DEF +4`);
   }
   // Elemental weakness: ice weapon vs burning
   if (enemy.trait === 'burning' && weaponUid) {
     const w = G.inventory.find(i => i.uid === weaponUid);
-    if (w && (w.id === 'iceSword' || w.effect === '降低敌方SPD2点')) {
+    if (w && w.id === 'iceSword') {
       pAtk = Math.floor(pAtk * 1.5);
       if (cs.round === 1) logLines.push(`[元素克制] 冰属性武器对烈焰守卫造成 150% 伤害！`);
     }
@@ -392,6 +388,13 @@ function endCombat(victory, logLines) {
     G.buffs = G.buffs.map(b => ({ ...b, battles: b.battles - 1 }))
       .filter(b => b.battles > 0);
 
+    // Restore base stats (undo combat debuffs)
+    if (G.combatState.baseAtk !== undefined) {
+      G.player.atk = G.combatState.baseAtk;
+      G.player.def = G.combatState.baseDef;
+      G.player.spd = G.combatState.baseSpd;
+      G.player.luk = G.combatState.baseLuk;
+    }
     G.combatState = null;
     G.phase = 'combat';
     saveGame();
