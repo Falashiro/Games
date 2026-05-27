@@ -446,32 +446,28 @@ function applyReward(reward, goldMult) {
         const lukBonus = G.buffs.some(b => b.effects && b.effects.lukBonus15) ? 15 : 0;
         const roll = Math.random() * 100;
         if (roll < (reward.chance + stats.luk * 2 + lukBonus)) {
-          const r = addItem(reward.itemId, reward.qty || 1);
-          if (r.full) { if (!G.pendingFullItems) G.pendingFullItems = []; G.pendingFullItems.push({itemId:reward.itemId,qty:reward.qty||1}); }
-          G.combatLog.push(r.full ? '⚠ 物品栏已满！' : `掉落：${ITEMS[reward.itemId].name} ×${reward.qty||1}`);
+          addItem(reward.itemId, reward.qty || 1);
+          G.combatLog.push(`掉落：${ITEMS[reward.itemId].name} ×${reward.qty||1}`);
           const accUids = [G.equipment.acc1, G.equipment.acc2].filter(Boolean);
           for (const auid of accUids) {
             const acc = G.inventory.find(i => i.uid === auid);
             if (acc && acc.id === 'destinyStar') {
-              const r2 = addItem(reward.itemId, reward.qty || 1);
-              if (r2.full) { if (!G.pendingFullItems) G.pendingFullItems = []; G.pendingFullItems.push({itemId:reward.itemId,qty:reward.qty||1}); }
-              G.combatLog.push(r2.full ? '' : `[命运之星] 额外掉落：${ITEMS[reward.itemId].name} ×${reward.qty||1}`);
+              addItem(reward.itemId, reward.qty || 1);
+              G.combatLog.push(`[命运之星] 额外掉落：${ITEMS[reward.itemId].name} ×${reward.qty||1}`);
               break;
             }
           }
         }
       } else {
-        const r = addItem(reward.itemId, reward.qty || 1);
-        if (r.full) { if (!G.pendingFullItems) G.pendingFullItems = []; G.pendingFullItems.push({itemId:reward.itemId,qty:reward.qty||1}); }
-        G.combatLog.push(r.full ? '⚠ 物品栏已满！' : `获得 ${ITEMS[reward.itemId].name} ×${reward.qty||1}`);
+        addItem(reward.itemId, reward.qty || 1);
+        G.combatLog.push(`获得 ${ITEMS[reward.itemId].name} ×${reward.qty||1}`);
       }
       break;
     case 'randomEquip':
       const equip = rollRandomEquip(reward.rarity);
       if (equip) {
-        const r = addItem(equip, 1);
-        if (r.full) { if (!G.pendingFullItems) G.pendingFullItems = []; G.pendingFullItems.push({itemId:equip,qty:1}); }
-        G.combatLog.push(r.full ? '⚠ 物品栏已满！' : `获得 ${ITEMS[equip].name}`);
+        addItem(equip, 1);
+        G.combatLog.push(`获得 ${ITEMS[equip].name}`);
       }
       break;
   }

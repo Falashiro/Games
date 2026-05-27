@@ -103,7 +103,7 @@ const EVENT_POOL_ACT2 = [
     options: [
       { text:'购买商品', conds:[], costs:[], results:[{type:'openShop'}] },
       { text:'出售物品', conds:[], costs:[], results:[{type:'openSell'}] },
-      { text:'询问矿洞情报', conds:[{type:'gold',op:'>=',val:10}], costs:[{type:'gold',val:7}], results:[
+      { text:'询问矿洞情报', conds:[{type:'gold',op:'>=',val:10}], costs:[{type:'gold',val:10}], results:[
         {type:'addItem',itemId:'goldOre',qty:1},
         {type:'msg',text:'老头接过金币，低声告诉你前方有一处隐藏的金矿脉。获得 <hl>金矿石 ×1</hl>。'}
       ]},

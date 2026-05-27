@@ -57,40 +57,40 @@ const ITEMS = {
   revivePotion:{id:'revivePotion',name:'重生药水',type:'consumable',rarity:'S',autoRevive:true,desc:'死亡时自动复活(恢复50%HP)'},
 
   // 材料
-  wolfFang:   { id:'wolfFang',  name:'狼牙',   type:'material',rarity:'F',sellPrice:8,desc:'' },
-  herb:       { id:'herb',       name:'草药',   type:'material',rarity:'E',sellPrice:5,desc:'' },
-  spiritHerb: { id:'spiritHerb', name:'灵草',   type:'material',rarity:'D',sellPrice:12,desc:'' },
-  ironOre:    { id:'ironOre',    name:'铁矿石',  type:'material',rarity:'E',sellPrice:8,desc:'' },
-  silverOre:  { id:'silverOre',  name:'银矿石',  type:'material',rarity:'D',sellPrice:15,desc:'' },
-  goldOre:    { id:'goldOre',    name:'金矿石',  type:'material',rarity:'C',sellPrice:30,desc:'' },
-  springWater:{ id:'springWater',name:'泉水',   type:'consumable',rarity:'E',heal:20,sellPrice:5,desc:'恢复20HP'},
+  wolfFang:   { id:'wolfFang',  name:'狼牙',   type:'material',rarity:'F',sellPrice:12,desc:'' },
+  herb:       { id:'herb',       name:'草药',   type:'material',rarity:'E',sellPrice:8,desc:'' },
+  spiritHerb: { id:'spiritHerb', name:'灵草',   type:'material',rarity:'D',sellPrice:18,desc:'' },
+  ironOre:    { id:'ironOre',    name:'铁矿石',  type:'material',rarity:'E',sellPrice:12,desc:'' },
+  silverOre:  { id:'silverOre',  name:'银矿石',  type:'material',rarity:'D',sellPrice:23,desc:'' },
+  goldOre:    { id:'goldOre',    name:'金矿石',  type:'material',rarity:'C',sellPrice:45,desc:'' },
+  springWater:{ id:'springWater',name:'泉水',   type:'consumable',rarity:'E',heal:20,sellPrice:8,desc:'恢复20HP'},
 
   // 第二幕新增
-  lizardScale:{ id:'lizardScale',name:'蜥蜴鳞片',type:'material',rarity:'E',sellPrice:10,desc:''},
-  spiderSilk: { id:'spiderSilk', name:'蜘蛛丝',  type:'material',rarity:'D',sellPrice:18,desc:''},
+  lizardScale:{ id:'lizardScale',name:'蜥蜴鳞片',type:'material',rarity:'E',sellPrice:15,desc:''},
+  spiderSilk: { id:'spiderSilk', name:'蜘蛛丝',  type:'material',rarity:'D',sellPrice:27,desc:''},
   oldPickaxe: { id:'oldPickaxe', name:'旧矿镐',  type:'weapon',rarity:'C',atk:8,effect:'对甲虫伤害+50%',desc:''},
-  glowMushroom:{id:'glowMushroom',name:'荧光蘑菇',type:'consumable',rarity:'D',heal:40,sellPrice:15,desc:''},
+  glowMushroom:{id:'glowMushroom',name:'荧光蘑菇',type:'consumable',rarity:'D',heal:40,sellPrice:23,desc:''},
 
   // 第三幕新增
-  runeShard:  { id:'runeShard',  name:'符文碎片',type:'material',rarity:'D',sellPrice:20,desc:'古代符文的力量结晶'},
-  runeRubbing:{ id:'runeRubbing',name:'符文拓片',type:'material',rarity:'D',sellPrice:25,desc:''},
-  ancientCoin:{ id:'ancientCoin',name:'古代硬币',type:'material',rarity:'C',sellPrice:35,desc:''},
-  starChart:  { id:'starChart',  name:'星图副本',type:'material',rarity:'C',sellPrice:40,desc:''},
-  iceShard:   { id:'iceShard',   name:'冰晶碎片',type:'material',rarity:'C',sellPrice:30,desc:''},
-  magicSpring:{ id:'magicSpring',name:'魔力泉水',type:'consumable',rarity:'D',heal:50,sellPrice:20,desc:''},
+  runeShard:  { id:'runeShard',  name:'符文碎片',type:'material',rarity:'D',sellPrice:30,desc:'古代符文的力量结晶'},
+  runeRubbing:{ id:'runeRubbing',name:'符文拓片',type:'material',rarity:'D',sellPrice:38,desc:''},
+  ancientCoin:{ id:'ancientCoin',name:'古代硬币',type:'material',rarity:'C',sellPrice:53,desc:''},
+  starChart:  { id:'starChart',  name:'星图副本',type:'material',rarity:'C',sellPrice:60,desc:''},
+  iceShard:   { id:'iceShard',   name:'冰晶碎片',type:'material',rarity:'C',sellPrice:45,desc:''},
+  magicSpring:{ id:'magicSpring',name:'魔力泉水',type:'consumable',rarity:'D',heal:50,sellPrice:30,desc:''},
   runeStoneAtk:{id:'runeStoneAtk',name:'符文石·力',type:'accessory',rarity:'B',atk:4,desc:'当前幕内有效'},
   runeStoneDef:{id:'runeStoneDef',name:'符文石·盾',type:'accessory',rarity:'B',def:4,desc:'当前幕内有效'},
   runeStoneSpd:{id:'runeStoneSpd',name:'符文石·速',type:'accessory',rarity:'B',spd:4,desc:'当前幕内有效'},
   runeStoneLuk:{id:'runeStoneLuk',name:'符文石·运',type:'accessory',rarity:'B',luk:5,desc:'当前幕内有效'},
 
   // 第四幕新增
-  purpleShard:{id:'purpleShard',name:'紫水晶碎片',type:'material',rarity:'D',sellPrice:30,desc:'发光的紫色水晶碎片'},
+  purpleShard:{id:'purpleShard',name:'紫水晶碎片',type:'material',rarity:'D',sellPrice:45,desc:'发光的紫色水晶碎片'},
   // 第五幕新增
-  dragonScaleFrag:{id:'dragonScaleFrag',name:'龙鳞碎片',type:'material',rarity:'C',sellPrice:50,desc:'远古巨龙的鳞片碎片'},
+  dragonScaleFrag:{id:'dragonScaleFrag',name:'龙鳞碎片',type:'material',rarity:'C',sellPrice:75,desc:'远古巨龙的鳞片碎片'},
   dragonBlood:{id:'dragonBlood',name:'龙血精华',type:'consumable',rarity:'B',desc:'下次战斗 ATK+10 DEF+5 每回合损失3HP'},
-  dragonRune:{id:'dragonRune',name:'龙语拓片',type:'material',rarity:'B',sellPrice:80,desc:'龙语碑文的拓印'},
+  dragonRune:{id:'dragonRune',name:'龙语拓片',type:'material',rarity:'B',sellPrice:120,desc:'龙语碑文的拓印'},
   // 第六幕新增
-  starDust:{id:'starDust',name:'星尘碎片',type:'material',rarity:'B',sellPrice:60,desc:'虚空中的星尘凝聚'},
+  starDust:{id:'starDust',name:'星尘碎片',type:'material',rarity:'B',sellPrice:90,desc:'虚空中的星尘凝聚'},
   starSword:{id:'starSword',name:'星辰之剑',type:'weapon',rarity:'S',atk:22,spd:5,luk:5,effect:'对全属性敌人伤害+30%',desc:'第六幕独有神兵'},
 };
 

@@ -86,6 +86,9 @@ const EVENT_POOL_ACT3 = [
         {type:'addItem',itemId:'magicPlate',qty:1},
         {type:'msg',text:'符文碎片消解了锁上的魔力禁制，盒子无声打开！获得 <hl>魔法板甲 (A)</hl>。'}
       ]},
+      { text:'不碰金属盒，离开古籍馆', conds:[], costs:[], results:[
+        {type:'msg',text:'你翻了几页残页，什么也看不懂，又打不开金属盒，悻悻离去。'}
+      ]},
     ],
   },
   // ---- 流浪法师 ----
@@ -105,7 +108,7 @@ const EVENT_POOL_ACT3 = [
     options: [
       { text:'购买商品', conds:[], costs:[], results:[{type:'openShop'}] },
       { text:'出售物品', conds:[], costs:[], results:[{type:'openSell'}] },
-      { text:'用法师的魔法强化装备', conds:[{type:'gold',op:'>=',val:120}], costs:[{type:'gold',val:80}], results:[
+      { text:'用法师的魔法强化装备', conds:[{type:'gold',op:'>=',val:120}], costs:[{type:'gold',val:120}], results:[
         {type:'enhanceEquip'},
         {type:'msg',text:'法师挥动法杖，一道魔法光芒笼罩了你的装备。'}
       ]},

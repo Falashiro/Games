@@ -198,11 +198,7 @@ async function applyResults(results) {
         break;
       case 'addItem': {
         const result = addItem(r.itemId, r.qty || 1);
-        if (result.full) {
-          if (!G.pendingFullItems) G.pendingFullItems = [];
-          G.pendingFullItems.push({ itemId: r.itemId, qty: r.qty || 1 });
-          messages.push(`⚠ 物品栏已满！`);
-        } else if (result.item && r.showName) {
+        if (result.item && r.showName) {
           messages.push(`获得 <hl>${ITEMS[r.itemId].name} ×${r.qty||1}</hl>`);
         }
         break;
@@ -256,14 +252,8 @@ async function applyResults(results) {
       case 'randomEquip': {
         const equipId = rollRandomEquip(r.rarity);
         if (equipId) {
-          const result = addItem(equipId, 1);
-          if (result.full) {
-            if (!G.pendingFullItems) G.pendingFullItems = [];
-            G.pendingFullItems.push({ itemId: equipId, qty: 1 });
-            messages.push(`⚠ 物品栏已满！`);
-          } else {
-            messages.push(`获得 <hl>${ITEMS[equipId].name} (${ITEMS[equipId].rarity})</hl>`);
-          }
+          addItem(equipId, 1);
+          messages.push(`获得 <hl>${ITEMS[equipId].name} (${ITEMS[equipId].rarity})</hl>`);
         }
         break;
       }
@@ -314,11 +304,6 @@ async function selectOption(idx) {
 
   if (G.shopMode) { render(); return; }
   if (G.phase === 'combat') {
-    return;
-  }
-  // Handle full inventory items
-  if (G.pendingFullItems && G.pendingFullItems.length > 0) {
-    showFullInventoryPopup(messages, hpBefore - hpAfterCosts);
     return;
   }
   showResultMessages(messages, hpBefore - hpAfterCosts);

@@ -121,7 +121,7 @@ const EVENT_POOL_ACT4 = [
   { id:'abyssFisher', title:'深渊钓客',
     desc:'一个白发老者坐在裂隙边缘，手中握着一根发光的鱼竿。"年轻人，要不要试试手气？这深渊底下可不止有怪物——还有被遗忘的宝物。"',
     options:[
-      { text:'试一次手气', conds:[{type:'gold',op:'>=',val:50}], costs:[{type:'gold',val:35}], results:[
+      { text:'试一次手气', conds:[{type:'gold',op:'>=',val:35}], costs:[{type:'gold',val:35}], results:[
         {type:'lukCheck',threshold:40,success:[
           {type:'randomEquip',rarity:'A-S'},
           {type:'msg',text:'钓竿猛地一沉！你拉上来一件闪闪发光的装备！'}
@@ -130,7 +130,7 @@ const EVENT_POOL_ACT4 = [
           {type:'msg',text:'钓竿剧烈弯曲——一只裂隙之怒被钓了上来！'}
         ]},
       ]},
-      { text:'花大价钱钓三次', conds:[{type:'gold',op:'>=',val:150}], costs:[{type:'gold',val:100}], results:[
+      { text:'花大价钱钓三次', conds:[{type:'gold',op:'>=',val:100}], costs:[{type:'gold',val:100}], results:[
         {type:'lukCheck',threshold:40,success:[{type:'randomEquip',rarity:'A'},{type:'msg',text:'第一钓：一件A级装备！'}],fail:[{type:'addItem',itemId:'purpleShard',qty:1},{type:'msg',text:'第一钓：紫水晶碎片。'}]},
         {type:'lukCheck',threshold:40,success:[{type:'randomEquip',rarity:'A'},{type:'msg',text:'第二钓：又一件A级装备！'}],fail:[{type:'addItem',itemId:'purpleShard',qty:1},{type:'msg',text:'第二钓：紫水晶碎片。'}]},
         {type:'lukCheck',threshold:40,success:[{type:'randomEquip',rarity:'A'},{type:'msg',text:'第三钓：再来一件A级装备！'}],fail:[{type:'addItem',itemId:'purpleShard',qty:1},{type:'msg',text:'第三钓：紫水晶碎片。'}]},

@@ -70,12 +70,11 @@ function addItem(itemId, qty) {
   const stackable = ['consumable','material'].includes(template.type);
   if (stackable) {
     const existing = G.inventory.find(i => i.id === itemId);
-    if (existing) { existing.qty += qty; return { item: existing, full: false }; }
+    if (existing) { existing.qty += qty; return { item: existing }; }
   }
-  if (G.inventory.length >= 12) return { item: null, full: true, itemId, qty };
   const newItem = { ...template, qty, uid: newUid() };
   G.inventory.push(newItem);
-  return { item: newItem, full: false };
+  return { item: newItem };
 }
 
 function removeItem(uid, qty) {

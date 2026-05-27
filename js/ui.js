@@ -37,19 +37,14 @@ function renderPlayerPanel() {
     equipHtml += `<div class="${cls}" onclick="${item ? `clickInventory(${item.uid})` : ''}" style="${item ? 'cursor:pointer' : ''}"><span class="label">${label}:</span><span class="item-name">${item ? item.name : '(空)'}</span>${tooltip}</div>`;
   }
   let invHtml = '';
-  for (let i = 0; i < 12; i++) {
-    const item = G.inventory[i];
-    if (item) {
-      let cls = `inv-slot rarity-${item.rarity}`;
-      let eqTag = '';
-      for (const uid of Object.values(G.equipment)) {
-        if (uid === item.uid) { cls += ' equipped'; eqTag = '<span class="eq-tag">E</span>'; break; }
-      }
-      const tooltip = makeItemTooltip(item);
-      invHtml += `<div class="${cls}" onclick="clickInventory(${item.uid})" oncontextmenu="rightClickInventory(${item.uid},event)">${eqTag}<span style="word-break:break-all;line-height:1.1">${item.name}</span>${item.qty>1?`<span class="qty">×${item.qty}</span>`:''}${tooltip}</div>`;
-    } else {
-      invHtml += `<div class="inv-slot" style="color:#bbb;background:#f9f9f9"></div>`;
+  for (const item of G.inventory) {
+    let cls = `inv-slot rarity-${item.rarity}`;
+    let eqTag = '';
+    for (const uid of Object.values(G.equipment)) {
+      if (uid === item.uid) { cls += ' equipped'; eqTag = '<span class="eq-tag">E</span>'; break; }
     }
+    const tooltip = makeItemTooltip(item);
+    invHtml += `<div class="${cls}" onclick="clickInventory(${item.uid})" oncontextmenu="rightClickInventory(${item.uid},event)">${eqTag}<span style="word-break:break-all;line-height:1.1">${item.name}</span>${item.qty>1?`<span class="qty">×${item.qty}</span>`:''}${tooltip}</div>`;
   }
   let buffHtml = '';
   for (const b of G.buffs) {
@@ -70,7 +65,7 @@ function renderPlayerPanel() {
       <div class="section-title">装备</div>
       ${equipHtml}
       ${buffHtml ? `<div class="section-title">Buff</div>${buffHtml}` : ''}
-      <div class="section-title">物品栏 (${G.inventory.length}/12)</div>
+      <div class="section-title">物品栏</div>
       <div class="inv-grid">${invHtml}</div>
     </div>`;
 }
@@ -326,59 +321,6 @@ function showResultMessages(messages, costHpLoss) {
   render();
 }
 
-function showFullInventoryPopup(messages, hpDiff) {
-  const items = G.pendingFullItems;
-  G.pendingFullItems = null;
-
-  function processNext() {
-    if (items.length === 0) {
-      showResultMessages(messages, hpDiff);
-      return;
-    }
-    const next = items.shift();
-    const item = ITEMS[next.itemId];
-    // Build list of inventory items to discard
-    let invHtml = '';
-    for (const inv of G.inventory) {
-      invHtml += `
-        <div class="shop-item">
-          <span style="flex:1">${inv.name} ${inv.qty>1?`×${inv.qty}`:''} <span style="color:#888;font-size:11px">(${inv.rarity}级)</span></span>
-          <button class="buy-btn" onclick="discardForItem(${inv.uid},'${next.itemId}',${next.qty})">丢弃此物</button>
-        </div>`;
-    }
-
-    const popup = document.createElement('div');
-    popup.className = 'popup-overlay';
-    popup.id = 'fullInvPopup';
-    popup.innerHTML = `
-      <div class="popup-box" style="max-width:480px">
-        <div class="popup-title">物品栏已满</div>
-        <div style="color:#b8860b;font-weight:bold;margin-bottom:12px">获得物品：${item.name} ${next.qty>1?`×${next.qty}`:''} <span style="color:#888;font-size:11px">(${item.rarity}级)</span></div>
-        <div style="color:#888;font-size:12px;margin-bottom:8px">选择一件物品丢弃以腾出空间：</div>
-        <div style="max-height:250px;overflow-y:auto">${invHtml}</div>
-        <div style="display:flex;gap:8px;margin-top:12px">
-          <button class="big-btn secondary" style="flex:1;font-size:14px;padding:10px" onclick="document.getElementById('fullInvPopup').remove();skipFullItem('${next.itemId}',${next.qty});processFullNext()">不获取此物</button>
-          <button class="big-btn secondary" style="flex:1;font-size:14px;padding:10px" onclick="document.getElementById('fullInvPopup').remove();skipFullItem('${next.itemId}',${next.qty});processFullNext();processRemainingFull()">不获取全部</button>
-        </div>
-      </div>`;
-    document.body.appendChild(popup);
-  }
-
-  window.processFullNext = processNext;
-  window.processRemainingFull = function() { items.length = 0; };
-  window.skipFullItem = function() {}; // Just skips, no action needed
-
-  window.discardForItem = function(uid, itemId, qty) {
-    removeItem(uid, 1);
-    addItem(itemId, qty);
-    document.getElementById('fullInvPopup')?.remove();
-    messages.push(`获得 <hl>${ITEMS[itemId].name}</hl>`);
-    processNext();
-  };
-
-  processNext();
-}
-
 function beginCombat() {
   G.preCombat = false;
   render();
@@ -411,14 +353,6 @@ function confirmCombatEnd() {
       }
     }
     G.pendingCombatRewards = null;
-  }
-  // Handle full inventory items from combat
-  if (G.pendingFullItems && G.pendingFullItems.length > 0) {
-    const items = [...G.pendingFullItems];
-    G.pendingFullItems = null;
-    let resultText = rewardLines.length > 0 ? rewardLines.join('<br>') : '战斗胜利！';
-    showFullInventoryPopup([resultText], 0);
-    return;
   }
   // Show rewards in event-result style
   let resultText = rewardLines.length > 0 ? rewardLines.join('<br>') : '战斗胜利！';
@@ -581,12 +515,6 @@ function buyShopItem(itemId, price) {
   if (G.shopPurchased && G.shopPurchased.includes(itemId)) return;
   const item = ITEMS[itemId];
   if (!item) return;
-  const stackable = ['consumable','material'].includes(item.type);
-  const hasStack = stackable && G.inventory.some(i => i.id === itemId);
-  if (G.inventory.length >= 12 && !hasStack) {
-    alert('物品栏已满！请先丢弃一些物品再购买。');
-    return;
-  }
   G.player.gold -= price;
   addItem(itemId, 1);
   if (!G.shopPurchased) G.shopPurchased = [];
@@ -597,7 +525,7 @@ function buyShopItem(itemId, price) {
 function sellItem(uid, qty) {
   const item = G.inventory.find(i => i.uid === uid);
   if (!item) return;
-  const price = Math.floor((item.sellPrice || 5) / 2) * qty;
+  const price = Math.floor((item.sellPrice || 5) * 0.8) * qty;
   G.player.gold += price;
   removeItem(uid, qty);
   render();
@@ -853,9 +781,5 @@ async function confirmItemSacrifice(optIndex, itemUid) {
   const messages = await applyResults(opt.results);
   if (G.shopMode) { render(); return; }
   if (G.phase === 'combat' || G.phase === 'combatEnd') return;
-  if (G.pendingFullItems && G.pendingFullItems.length > 0) {
-    showFullInventoryPopup(messages, hpBefore - hpAfterCosts);
-    return;
-  }
   showResultMessages(messages, hpBefore - hpAfterCosts);
 }
